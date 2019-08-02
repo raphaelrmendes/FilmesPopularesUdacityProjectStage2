@@ -1,0 +1,73 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.0"
+    defaultConfig {
+        applicationId "br.com.rochamendes.filmespopularesudacityprojectstage2"
+        minSdkVersion 19
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        File apiKey = new File("API_key_TheMovieDB.properties")
+        if (apiKey.exists()) {
+            def ArquivoAPI_key = rootProject.file('API_key_TheMovieDB.properties')
+            def PropriedadesAPI_key = new Properties()
+            PropriedadesAPI_key.load(new FileInputStream(ArquivoAPI_key))
+            buildConfigField "String", "API_key", PropriedadesAPI_key.getProperty('API_key')
+        }
+        dataBinding.enabled = true
+        vectorDrawables.useSupportLibrary = true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    // Cardview
+    implementation 'androidx.cardview:cardview:1.0.0'
+    // Vector Drawable
+        implementation 'androidx.vectordrawable:vectordrawable:1.1.0-rc01'
+        implementation 'androidx.vectordrawable:vectordrawable-animated:1.1.0-rc01'
+    // appcompat
+        implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
+    // constraintLayout
+        implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    // Recyclerview
+        implementation 'androidx.recyclerview:recyclerview:1.1.0-beta01'
+    // Room components
+        def room_version = "2.2.0-alpha01" // 2.1.0 for latest stable version
+        implementation "androidx.room:room-runtime:$room_version"
+        annotationProcessor "androidx.room:room-compiler:$room_version"
+    // Lifecycle components
+        def lifecycle_version = "2.0.0"
+        // ViewModel and LiveData
+        implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    // WorkManager
+        def work_version = "2.1.0"
+        // (Java only)
+        implementation "androidx.work:work-runtime:$work_version"
+    // other than androidx
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.google.code.gson:gson:2.8.5'
+}
+
+repositories {
+    google()
+    jcenter()
+    mavenCentral()
+}
